@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Driver License Platform - Technical Presentation</title>
+    <style>
+        @page {
+            size: 10in 7.5in;
+            margin: 0;
+        }
+        body {
+            font-family: 'Consolas', 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+        .slide {
+            width: 10in;
+            height: 7.5in;
+            page-break-after: always;
+            background: white;
+            padding: 50px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 44px;
+            margin: 0 0 25px 0;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        .slide h2 {
+            color: #34495e;
+            font-size: 32px;
+            margin: 15px 0;
+        }
+        .slide h3 {
+            color: #555;
+            font-size: 24px;
+            margin: 12px 0;
+        }
+        .slide p, .slide li {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #333;
+        }
+        .slide code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #c7254e;
+            font-size: 16px;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .title-slide {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+        }
+        .title-slide h1 {
+            color: white;
+            border: none;
+            font-size: 56px;
+            margin-bottom: 30px;
+        }
+        .title-slide code {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 15px 0;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #3498db;
+            color: white;
+        }
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide title-slide">
+        <h1>Driver License Platform</h1>
+        <p style="font-size: 32px; margin-top: 30px;">Technical Architecture & Setup</p>
+        <p style="font-size: 24px; margin-top: 50px;">Full-Stack Web Application</p>
+        <p style="font-size: 20px; margin-top: 80px;">React • Node.js • MongoDB • Kubernetes</p>
+        <p style="font-size: 18px; margin-top: 100px;">Goutham | github.com/goutham432/Driver_License_App</p>
+    </div>
+
+    <!-- Slide 2: Technology Stack -->
+    <div class="slide">
+        <h1>Technology Stack</h1>
+        <div class="three-column">
+            <div>
+                <h3>Frontend</h3>
+                <ul style="font-size: 16px;">
+                    <li>React 18.2.0</li>
+                    <li>React Router 6.16.0</li>
+                    <li>Vite 4.4.5</li>
+                    <li>Tailwind CSS 3.3.3</li>
+                    <li>Axios 1.5.0</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Backend</h3>
+                <ul style="font-size: 16px;">
+                    <li>Node.js 18+</li>
+                    <li>Express.js 4.18.2</li>
+                    <li>Mongoose 7.5.0</li>
+                    <li>JWT 9.0.2</li>
+                    <li>bcryptjs 2.4.3</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Infrastructure</h3>
+                <ul style="font-size: 16px;">
+                    <li>MongoDB 7.0</li>
+                    <li>Docker</li>
+                    <li>Kubernetes</li>
+                    <li>DigitalOcean</li>
+                    <li>Nginx Ingress</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: System Architecture -->
+    <div class="slide">
+        <h1>System Architecture</h1>
+        <div class="code-block" style="font-size: 12px; line-height: 1.4;">
+┌─────────────────────────────────────────┐
+│      CLIENT BROWSER (Port 3000)        │
+│  React App + Vite Dev Server           │
+│  - Components, Pages, Contexts         │
+│  - Axios HTTP Client                    │
+└──────────────┬──────────────────────────┘
+               │ HTTP/REST API
+               │ Proxy: /api → :5000
+               ▼
+┌─────────────────────────────────────────┐
+│   EXPRESS SERVER (Port 5000)           │
+│  Middleware: Helmet, CORS, Rate Limit │
+│  Routes: /api/auth, /api/tests, etc.  │
+│  Auth: JWT Verification                │
+└──────────────┬──────────────────────────┘
+               │ Mongoose ODM
+               ▼
+┌─────────────────────────────────────────┐
+│      MONGODB DATABASE                   │
+│  Collections: users, tests, appointments│
+└─────────────────────────────────────────┘
+        </div>
+    </div>
+
+    <!-- Slide 4: Project Structure -->
+    <div class="slide">
+        <h1>Project Structure</h1>
+        <div class="code-block" style="font-size: 11px;">
+driver-license-platform/
+├── client/              # React frontend
+│   ├── src/
+│   │   ├── components/   # Navbar, ProtectedRoute
+│   │   ├── contexts/     # AuthContext
+│   │   ├── pages/        # Home, Login, Dashboard, etc.
+│   │   └── App.jsx       # Main component + routing
+│   └── vite.config.js
+├── models/               # Mongoose schemas
+│   ├── User.js
+│   ├── Test.js
+│   └── Appointment.js
+├── routes/               # Express route handlers
+│   ├── auth.js
+│   ├── tests.js
+│   └── appointments.js
+├── middleware/           # auth.js (JWT)
+├── k8s/                  # Kubernetes manifests
+└── server.js             # Express entry point
+        </div>
+    </div>
+
+    <!-- Slide 5: Development Setup -->
+    <div class="slide">
+        <h1>Development Setup</h1>
+        <div style="font-size: 16px;">
+            <h3>1. Prerequisites</h3>
+            <ul>
+                <li>Node.js 18+ & npm</li>
+                <li>MongoDB (local or Atlas)</li>
+                <li>Git</li>
+            </ul>
+            
+            <h3>2. Installation</h3>
+            <div class="code-block" style="font-size: 12px;"># Clone repository
+git clone https://github.com/goutham432/Driver_License_App.git
+cd Driver_License_App
+
+# Install backend dependencies
+npm install
+
+# Install frontend dependencies
+cd client && npm install && cd ..
+
+# Configure environment
+cp env.example .env
+# Edit .env with MONGODB_URI, JWT_SECRET</div>
+            
+            <h3>3. Start Servers</h3>
+            <div class="code-block" style="font-size: 12px;"># Terminal 1: Backend
+npm run dev  # Port 5000
+
+# Terminal 2: Frontend
+cd client && npm run dev  # Port 3000</div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Authentication Flow -->
+    <div class="slide">
+        <h1>Authentication Flow</h1>
+        <div style="font-size: 16px;">
+            <h3>Registration</h3>
+            <ol>
+                <li>User submits form → POST <code>/api/auth/register</code></li>
+                <li>Backend validates & hashes password (bcrypt, 10 rounds)</li>
+                <li>Save user to MongoDB</li>
+                <li>Generate JWT token (expires 7 days)</li>
+                <li>Return token + user data</li>
+            </ol>
+            
+            <h3>Login</h3>
+            <ol>
+                <li>POST <code>/api/auth/login</code> with email/password</li>
+                <li>Verify password with bcrypt.compare()</li>
+                <li>Generate & return JWT token</li>
+            </ol>
+            
+            <h3>Protected Routes</h3>
+            <ol>
+                <li>Frontend adds <code>Authorization: Bearer &lt;token&gt;</code></li>
+                <li>Middleware verifies JWT with secret</li>
+                <li>Attach user to <code>req.user</code></li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Slide 7: Database Schema -->
+    <div class="slide">
+        <h1>Database Schema</h1>
+        <table>
+            <tr>
+                <th>Collection</th>
+                <th>Key Fields</th>
+                <th>Indexes</th>
+            </tr>
+            <tr>
+                <td><code>users</code></td>
+                <td>email (unique), password (hashed), state, role</td>
+                <td>email, state</td>
+            </tr>
+            <tr>
+                <td><code>tests</code></td>
+                <td>state, category, questions[], passingScore</td>
+                <td>state, category</td>
+            </tr>
+            <tr>
+                <td><code>appointments</code></td>
+                <td>user (ref), state, date, timeSlot, status</td>
+                <td>user, date, state</td>
+            </tr>
+        </table>
+        <div class="highlight" style="margin-top: 15px;">
+            <p style="font-size: 14px; margin: 0;">
+                <strong>Relationships:</strong> Appointments reference Users (ObjectId), 
+                Users store test scores array with testId references
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 8: API Endpoints -->
+    <div class="slide">
+        <h1>API Endpoints</h1>
+        <table style="font-size: 13px;">
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Auth</th>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><code>/api/auth/register</code></td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><code>/api/auth/login</code></td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td><code>/api/tests/state/:state</code></td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td><code>/api/tests/:testId</code></td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><code>/api/tests/:testId/submit</code></td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td><code>/api/appointments/slots/:state/:date</code></td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td><code>/api/appointments/book</code></td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td><code>/api/appointments/my-appointments</code></td>
+                <td>Yes</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Slide 9: Security Implementation -->
+    <div class="slide">
+        <h1>Security Features</h1>
+        <div class="two-column">
+            <div>
+                <h3>Password Hashing</h3>
+                <div class="code-block" style="font-size: 11px;">bcrypt.genSalt(10)
+bcrypt.hash(password, salt)</div>
+                
+                <h3>JWT Tokens</h3>
+                <div class="code-block" style="font-size: 11px;">jwt.sign({ id }, SECRET, {
+  expiresIn: '7d'
+})</div>
+            </div>
+            <div>
+                <h3>Rate Limiting</h3>
+                <div class="code-block" style="font-size: 11px;">100 requests / 15 minutes
+per IP address</div>
+                
+                <h3>Security Headers</h3>
+                <ul style="font-size: 14px;">
+                    <li>Helmet.js</li>
+                    <li>CORS configuration</li>
+                    <li>X-Content-Type-Options</li>
+                    <li>X-Frame-Options</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Docker Deployment -->
+    <div class="slide">
+        <h1>Docker Deployment</h1>
+        <h3>Multi-stage Build</h3>
+        <div class="code-block" style="font-size: 11px;"># Stage 1: Build React frontend
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app/client
+COPY client/package*.json ./
+RUN npm install
+COPY client/ .
+RUN npm run build
+
+# Stage 2: Final image
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=frontend-builder /app/client/dist ./client/dist
+COPY package*.json ./
+RUN npm install --production
+COPY . .
+EXPOSE 5000
+CMD ["node", "server.js"]</div>
+        <div class="highlight" style="margin-top: 10px;">
+            <p style="font-size: 14px; margin: 0;">
+                <strong>Benefits:</strong> Smaller image size, optimized production build, 
+                single container deployment
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 11: Kubernetes Architecture -->
+    <div class="slide">
+        <h1>Kubernetes Deployment</h1>
+        <div style="font-size: 16px;">
+            <h3>Components</h3>
+            <ul>
+                <li><strong>Namespace:</strong> <code>driver-license-platform</code></li>
+                <li><strong>Deployment:</strong> 3 replicas (app + MongoDB)</li>
+                <li><strong>Service:</strong> LoadBalancer (DigitalOcean)</li>
+                <li><strong>HPA:</strong> Auto-scale 2-10 pods (70% CPU threshold)</li>
+                <li><strong>Ingress:</strong> Nginx with SSL/TLS (cert-manager)</li>
+            </ul>
+            
+            <h3>Resource Limits</h3>
+            <div class="code-block" style="font-size: 12px;">requests:
+  cpu: "100m"
+  memory: "128Mi"
+limits:
+  cpu: "500m"
+  memory: "512Mi"</div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Performance Optimizations -->
+    <div class="slide">
+        <h1>Performance Optimizations</h1>
+        <div class="two-column">
+            <div>
+                <h3>Frontend</h3>
+                <ul style="font-size: 14px;">
+                    <li>Code splitting (React.lazy)</li>
+                    <li>Vite HMR (fast dev)</li>
+                    <li>Production minification</li>
+                    <li>Axios interceptors</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Backend</h3>
+                <ul style="font-size: 14px;">
+                    <li>MongoDB indexing</li>
+                    <li>Connection pooling</li>
+                    <li>Response compression</li>
+                    <li>Rate limiting</li>
+                </ul>
+            </div>
+        </div>
+        <div class="highlight" style="margin-top: 15px;">
+            <p style="font-size: 14px; margin: 0;">
+                <strong>Future:</strong> Redis caching, CDN for static assets, 
+                database query optimization
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 13: Development Workflow -->
+    <div class="slide">
+        <h1>Development Workflow</h1>
+        <div style="font-size: 16px;">
+            <h3>Local Development</h3>
+            <ol>
+                <li>Backend: <code>npm run dev</code> (nodemon auto-reload)</li>
+                <li>Frontend: <code>npm run dev</code> (Vite HMR)</li>
+                <li>MongoDB: Local instance or Atlas</li>
+            </ol>
+            
+            <h3>Testing</h3>
+            <ul>
+                <li>Manual testing via browser</li>
+                <li>API testing with Postman/Thunder Client</li>
+                <li>Sample data: <code>node scripts/init-sample-data.js</code></li>
+            </ul>
+            
+            <h3>Production Build</h3>
+            <div class="code-block" style="font-size: 12px;"># Build frontend
+cd client && npm run build
+
+# Production server
+NODE_ENV=production node server.js</div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Summary -->
+    <div class="slide">
+        <h1>Summary</h1>
+        <div style="font-size: 18px;">
+            <h3>Full-Stack Application</h3>
+            <ul>
+                <li><strong>Frontend:</strong> React + Vite + Tailwind CSS</li>
+                <li><strong>Backend:</strong> Node.js + Express + MongoDB</li>
+                <li><strong>Auth:</strong> JWT + bcryptjs</li>
+                <li><strong>Deployment:</strong> Docker + Kubernetes</li>
+            </ul>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li>Multi-state support (CA, TX, FL, NY)</li>
+                <li>Practice tests with scoring</li>
+                <li>DMV appointment booking</li>
+                <li>User dashboard & analytics</li>
+                <li>Secure authentication</li>
+            </ul>
+            
+            <div class="highlight" style="margin-top: 15px;">
+                <p style="font-size: 16px; margin: 0;">
+                    <strong>Production Ready:</strong> Security, scalability, monitoring, 
+                    and deployment configurations included
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Thank You -->
+    <div class="slide title-slide">
+        <h1>Thank You!</h1>
+        <p style="font-size: 28px; margin-top: 50px;">Questions & Discussion</p>
+        <p style="font-size: 20px; margin-top: 80px;">
+            Repository: github.com/goutham432/Driver_License_App<br>
+            Local: http://localhost:3000<br>
+            API: http://localhost:5000
+        </p>
+    </div>
+</body>
+</html>
+

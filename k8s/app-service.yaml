@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: driver-license-app-service
+  namespace: driver-license-platform
+  labels:
+    app: driver-license-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: driver-license-app
+

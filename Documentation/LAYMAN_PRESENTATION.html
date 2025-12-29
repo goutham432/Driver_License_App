@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Driver License Platform - Presentation (Layman's Terms)</title>
+    <style>
+        @page {
+            size: 10in 7.5in;
+            margin: 0;
+        }
+        body {
+            font-family: 'Calibri', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .slide {
+            width: 10in;
+            height: 7.5in;
+            page-break-after: always;
+            background: white;
+            padding: 60px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 48px;
+            margin: 0 0 30px 0;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 20px;
+        }
+        .slide h2 {
+            color: #34495e;
+            font-size: 36px;
+            margin: 20px 0;
+        }
+        .slide h3 {
+            color: #555;
+            font-size: 28px;
+            margin: 15px 0;
+        }
+        .slide p, .slide li {
+            font-size: 24px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .slide ul {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+        .slide li {
+            margin: 10px 0;
+        }
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .title-slide h1 {
+            color: white;
+            border: none;
+            font-size: 64px;
+            margin-bottom: 40px;
+        }
+        .title-slide p {
+            color: white;
+            font-size: 32px;
+        }
+        .highlight-box {
+            background: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+        .icon {
+            font-size: 80px;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide title-slide">
+        <h1>Driver License Platform</h1>
+        <p style="font-size: 36px; margin-top: 40px;">Setup & Architecture Overview</p>
+        <p style="font-size: 24px; margin-top: 60px;">For Non-Technical Users</p>
+        <p style="font-size: 20px; margin-top: 100px;">Presented by: Goutham</p>
+    </div>
+
+    <!-- Slide 2: What is This? -->
+    <div class="slide">
+        <h1>What is This Application?</h1>
+        <div class="highlight-box">
+            <p style="font-size: 28px; margin: 0;"><strong>A website that helps people:</strong></p>
+        </div>
+        <ul>
+            <li>📚 <strong>Practice</strong> for driver's license tests</li>
+            <li>📅 <strong>Book appointments</strong> at the DMV</li>
+            <li>📊 <strong>Track progress</strong> and view test scores</li>
+            <li>🗺️ <strong>Works for multiple states:</strong> CA, TX, FL, NY</li>
+        </ul>
+        <p style="margin-top: 30px; font-size: 22px; color: #7f8c8d;">
+            Think of it like a <strong>study guide app</strong> combined with an <strong>appointment booking system</strong>
+        </p>
+    </div>
+
+    <!-- Slide 3: Three Main Parts -->
+    <div class="slide">
+        <h1>The Three Main Parts</h1>
+        <div class="two-column">
+            <div>
+                <div class="icon">🖥️</div>
+                <h3>Frontend</h3>
+                <p style="font-size: 20px;">What you see and click on</p>
+                <p style="font-size: 18px; color: #666;">Like the storefront of a shop</p>
+            </div>
+            <div>
+                <div class="icon">⚙️</div>
+                <h3>Backend</h3>
+                <p style="font-size: 20px;">The brain that does the work</p>
+                <p style="font-size: 18px; color: #666;">Like the kitchen of a restaurant</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <div class="icon">🗄️</div>
+            <h3>Database</h3>
+            <p style="font-size: 20px;">Stores all the information</p>
+            <p style="font-size: 18px; color: #666;">Like a filing cabinet</p>
+        </div>
+    </div>
+
+    <!-- Slide 4: How They Work Together -->
+    <div class="slide">
+        <h1>How They Work Together</h1>
+        <p style="font-size: 26px; margin-bottom: 30px;">Think of ordering food at a restaurant:</p>
+        <ol style="font-size: 22px;">
+            <li><strong>You (Frontend):</strong> Look at menu, place order</li>
+            <li><strong>Waiter (Backend):</strong> Takes order to kitchen</li>
+            <li><strong>Kitchen (Database):</strong> Prepares and stores info</li>
+            <li><strong>Waiter (Backend):</strong> Brings food back to you</li>
+            <li><strong>You (Frontend):</strong> See and enjoy results</li>
+        </ol>
+        <div class="highlight-box" style="margin-top: 30px;">
+            <p style="font-size: 20px; margin: 0;">
+                <strong>Same flow:</strong> Frontend → Backend → Database → Backend → Frontend
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 5: Technology Stack (Simple) -->
+    <div class="slide">
+        <h1>What Technologies Are Used?</h1>
+        <div class="two-column">
+            <div>
+                <h3>Frontend</h3>
+                <ul style="font-size: 20px;">
+                    <li><strong>React</strong> - Building blocks for the website</li>
+                    <li><strong>Tailwind CSS</strong> - Makes it look beautiful</li>
+                    <li><strong>Vite</strong> - Makes it run fast</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Backend</h3>
+                <ul style="font-size: 20px;">
+                    <li><strong>Node.js</strong> - The engine that runs it</li>
+                    <li><strong>Express</strong> - Handles requests</li>
+                    <li><strong>MongoDB</strong> - Stores data</li>
+                </ul>
+            </div>
+        </div>
+        <div class="highlight-box" style="margin-top: 30px;">
+            <p style="font-size: 22px; margin: 0;">
+                All modern, reliable technologies used by major companies
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 6: Setup Steps -->
+    <div class="slide">
+        <h1>Setting Up the Application</h1>
+        <ol style="font-size: 22px;">
+            <li><strong>Install Node.js</strong> - The engine (like installing an app)</li>
+            <li><strong>Install Git</strong> - For managing code</li>
+            <li><strong>Install Dependencies</strong> - Get all the pieces needed (automatic)</li>
+            <li><strong>Configure Settings</strong> - Tell it where to find the database</li>
+            <li><strong>Start Servers</strong> - Turn on the application</li>
+            <li><strong>Open Browser</strong> - Go to http://localhost:3000</li>
+        </ol>
+        <div class="highlight-box" style="margin-top: 30px;">
+            <p style="font-size: 24px; margin: 0;">
+                <strong>Total time:</strong> About 10-15 minutes for first-time setup
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 7: Architecture Flow -->
+    <div class="slide">
+        <h1>How Information Flows</h1>
+        <div style="font-size: 20px; line-height: 2;">
+            <p><strong>1.</strong> User opens browser → Goes to http://localhost:3000</p>
+            <p><strong>2.</strong> Frontend loads → Shows login page, dashboard, etc.</p>
+            <p><strong>3.</strong> User clicks "Take Test" → Frontend asks Backend for questions</p>
+            <p><strong>4.</strong> Backend checks Database → Gets test questions</p>
+            <p><strong>5.</strong> Backend sends to Frontend → Questions appear on screen</p>
+            <p><strong>6.</strong> User answers → Frontend sends answers to Backend</p>
+            <p><strong>7.</strong> Backend calculates score → Saves to Database</p>
+            <p><strong>8.</strong> Frontend shows results → User sees their score</p>
+        </div>
+    </div>
+
+    <!-- Slide 8: Security Features -->
+    <div class="slide">
+        <h1>Security Features</h1>
+        <div class="two-column">
+            <div>
+                <h3>🔐 Password Protection</h3>
+                <p style="font-size: 20px;">Passwords are scrambled before storing (like a secret code)</p>
+            </div>
+            <div>
+                <h3>🎫 Login Tokens</h3>
+                <p style="font-size: 20px;">Temporary ID cards that prove you're logged in</p>
+            </div>
+        </div>
+        <div style="margin-top: 30px;">
+            <h3>🛡️ Additional Security</h3>
+            <ul style="font-size: 20px;">
+                <li>Rate limiting - Prevents too many requests</li>
+                <li>CORS protection - Controls who can access</li>
+                <li>Security headers - Extra protection layers</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 9: Key Features -->
+    <div class="slide">
+        <h1>Key Features</h1>
+        <div class="two-column">
+            <div>
+                <h3>✅ User Registration</h3>
+                <p style="font-size: 18px;">Create account with email and password</p>
+                
+                <h3>📝 Practice Tests</h3>
+                <p style="font-size: 18px;">Take timed tests with multiple choice questions</p>
+            </div>
+            <div>
+                <h3>📅 Appointment Booking</h3>
+                <p style="font-size: 18px;">Schedule DMV appointments online</p>
+                
+                <h3>📊 Dashboard</h3>
+                <p style="font-size: 18px;">View test scores and appointment history</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Deployment Options -->
+    <div class="slide">
+        <h1>Where Can It Run?</h1>
+        <div style="font-size: 22px;">
+            <h3>1. Local Development (Your Computer)</h3>
+            <p style="font-size: 20px;">• Fast to set up<br>• Only you can access<br>• Good for testing</p>
+            
+            <h3>2. Docker (Containerized)</h3>
+            <p style="font-size: 20px;">• Easy to move between computers<br>• Everything packaged together<br>• Consistent environment</p>
+            
+            <h3>3. Kubernetes (Cloud Production)</h3>
+            <p style="font-size: 20px;">• Handles high traffic automatically<br>• Multiple servers for reliability<br>• Professional setup</p>
+        </div>
+    </div>
+
+    <!-- Slide 11: Troubleshooting -->
+    <div class="slide">
+        <h1>Common Issues & Solutions</h1>
+        <div style="font-size: 20px;">
+            <h3>"Site can't be reached"</h3>
+            <ul>
+                <li>Check if servers are running</li>
+                <li>Wait 10-15 seconds after starting</li>
+                <li>Try http://localhost:3000 (not https://)</li>
+            </ul>
+            
+            <h3>Port Already in Use</h3>
+            <ul>
+                <li>Another app is using port 3000 or 5000</li>
+                <li>Close other applications</li>
+            </ul>
+            
+            <h3>MongoDB Connection Error</h3>
+            <ul>
+                <li>MongoDB might not be running</li>
+                <li>Check connection settings</li>
+                <li>Some features work without MongoDB</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 12: Summary -->
+    <div class="slide">
+        <h1>Summary</h1>
+        <div class="highlight-box">
+            <p style="font-size: 26px; margin: 0;">
+                This is a <strong>full-stack web application</strong> that helps people prepare for driver's license tests and book DMV appointments.
+            </p>
+        </div>
+        <div style="margin-top: 40px; font-size: 22px;">
+            <p><strong>Three Main Components:</strong></p>
+            <ul>
+                <li><strong>Frontend (React):</strong> What users see and interact with</li>
+                <li><strong>Backend (Node.js/Express):</strong> Handles logic and security</li>
+                <li><strong>Database (MongoDB):</strong> Stores all data</li>
+            </ul>
+        </div>
+        <p style="margin-top: 30px; font-size: 20px; color: #7f8c8d;">
+            Setup involves installing tools, dependencies, and starting two servers. The application can run locally, in Docker, or be deployed to Kubernetes for production use.
+        </p>
+    </div>
+
+    <!-- Slide 13: Thank You -->
+    <div class="slide title-slide">
+        <h1>Thank You!</h1>
+        <p style="font-size: 32px; margin-top: 60px;">Questions?</p>
+        <p style="font-size: 24px; margin-top: 100px;">Application URL: http://localhost:3000</p>
+        <p style="font-size: 20px; margin-top: 40px;">Repository: github.com/goutham432/Driver_License_App</p>
+    </div>
+</body>
+</html>
+
