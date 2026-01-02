@@ -18,6 +18,7 @@ spec:
       containers:
       - name: app
         image: registry.digitalocean.com/driver-license-registry/driver-license-app:latest
+        # Update this with your actual registry name after creating it
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
