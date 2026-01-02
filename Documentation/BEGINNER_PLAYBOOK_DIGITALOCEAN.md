@@ -88,6 +88,18 @@ DigitalOcean Kubernetes Cluster (DOKS)
 - **How:** Go to https://github.com and sign up (free)
 - **Action:** Create account if you don't have one
 
+#### 1a. **GitHub Personal Access Token** (Required)
+- **Why:** GitHub requires PAT for authentication and CI/CD
+- **How to Create:**
+  1. Go to: https://github.com/settings/tokens
+  2. Click: "Generate new token (classic)"
+  3. Name: `DigitalOcean-DOKS-Deployment`
+  4. Scopes: ✅ `repo`, ✅ `workflow`
+  5. Copy the token (looks like: `ghp_xxxxxxxxxxxxxxxxxxxx`)
+- **For CI/CD:** Add DigitalOcean token as GitHub Secret:
+  - Go to: Repository → Settings → Secrets → Actions
+  - Add: `DIGITALOCEAN_ACCESS_TOKEN` = Your DigitalOcean API token
+
 #### 2. **DigitalOcean Account** ✅
 - **Why:** To host your application and database
 - **How:** Go to https://www.digitalocean.com and sign up

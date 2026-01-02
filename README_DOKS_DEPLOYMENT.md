@@ -50,11 +50,33 @@ DigitalOcean Kubernetes Cluster (DOKS)
 
 - **DigitalOcean Account** (with $200 assessment credit)
 - **GitHub Account** (code already pushed)
+- **GitHub Personal Access Token** (for CI/CD)
+  - Create at: https://github.com/settings/tokens
+  - Add as secret: `DIGITALOCEAN_ACCESS_TOKEN` in repository settings
 - **Local Tools:**
   - Git
   - Docker Desktop
   - kubectl
   - doctl (DigitalOcean CLI)
+
+### 🔐 GitHub Secrets Setup (Required for CI/CD)
+
+**Why:** GitHub Actions needs authentication to push to DigitalOcean
+
+**Steps:**
+1. **Get DigitalOcean API Token:**
+   - Go to: https://cloud.digitalocean.com/account/api/tokens
+   - Generate new token (copy it - you won't see it again!)
+   - Token format: `dop_v1_xxxxxxxxxxxxxxxxxxxx`
+
+2. **Add to GitHub Secrets:**
+   - Go to: https://github.com/goutham432/Driver_License_App/settings/secrets/actions
+   - Click: "New repository secret"
+   - Name: `DIGITALOCEAN_ACCESS_TOKEN`
+   - Value: Paste your DigitalOcean token
+   - Click: "Add secret"
+
+**Result:** GitHub Actions will automatically deploy on every push to `main` branch!
 
 ---
 
