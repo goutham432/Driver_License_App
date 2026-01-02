@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Driver License Platform - Architecture</title>
+    <style>
+        @page {
+            size: 11in 8.5in;
+            margin: 0.5in;
+        }
+        body {
+            font-family: 'Calibri', Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: white;
+        }
+        h1 {
+            color: #1e3c72;
+            font-size: 32px;
+            margin: 0 0 25px 0;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 20px;
+            margin: 20px 0 12px 0;
+        }
+        .architecture-diagram {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 20px 0;
+        }
+        .component-box {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .component-box h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #3498db;
+            color: white;
+        }
+        ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin: 5px 0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Driver License Platform - System Architecture</h1>
+
+    <h2>High-Level Architecture</h2>
+    <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│                         CLIENT LAYER                              │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  React Frontend (Port 3000)                               │  │
+│  │  • 8 Pages (Home, Login, Register, Dashboard, etc.)        │  │
+│  │  • React Router for navigation                            │  │
+│  │  • Tailwind CSS for styling                               │  │
+│  │  • Axios for API communication                            │  │
+│  │  • Context API for state management                       │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │ HTTP/REST API
+                                │ (Proxy: /api → localhost:5000)
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       APPLICATION LAYER                         │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Express.js Backend (Port 5000)                           │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │  Middleware Stack:                                  │  │  │
+│  │  │  • Helmet (Security headers)                        │  │  │
+│  │  │  • CORS (Cross-origin requests)                     │  │  │
+│  │  │  • Rate Limiting (100 req/15min)                    │  │  │
+│  │  │  • JWT Authentication                                │  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │  Route Handlers:                                    │  │  │
+│  │  │  • /api/auth (register, login)                     │  │  │
+│  │  │  • /api/tests (CRUD operations)                    │  │  │
+│  │  │  • /api/appointments (booking, management)          │  │  │
+│  │  │  • /api/states (state information)                 │  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │ Mongoose ODM
+                                │ Connection Pool
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                         DATA LAYER                               │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  MongoDB Database                                          │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │  Collections:                                       │  │  │
+│  │  │  • users (email, password hash, state, testScores) │  │  │
+│  │  │  • tests (state, questions, answers, passingScore) │  │  │
+│  │  │  • appointments (user, date, time, location, status)│  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+    </div>
+
+    <h2>Technology Stack</h2>
+    <div class="two-column">
+        <div class="component-box">
+            <h3>Frontend Technologies</h3>
+            <ul>
+                <li><strong>React 18.2.0</strong> - UI library</li>
+                <li><strong>Vite 4.4.5</strong> - Build tool & dev server</li>
+                <li><strong>React Router 6.16.0</strong> - Client-side routing</li>
+                <li><strong>Tailwind CSS 3.3.3</strong> - Styling framework</li>
+                <li><strong>Axios 1.5.0</strong> - HTTP client</li>
+                <li><strong>Lucide React</strong> - Icon library</li>
+            </ul>
+        </div>
+        <div class="component-box">
+            <h3>Backend Technologies</h3>
+            <ul>
+                <li><strong>Node.js 18+</strong> - JavaScript runtime</li>
+                <li><strong>Express.js 4.18.2</strong> - Web framework</li>
+                <li><strong>MongoDB 7.0</strong> - NoSQL database</li>
+                <li><strong>Mongoose 7.5.0</strong> - ODM (Object Document Mapper)</li>
+                <li><strong>JWT 9.0.2</strong> - Authentication tokens</li>
+                <li><strong>bcryptjs 2.4.3</strong> - Password hashing</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Data Flow</h2>
+    <table>
+        <tr>
+            <th>Step</th>
+            <th>Description</th>
+            <th>Technology</th>
+        </tr>
+        <tr>
+            <td>1. User Request</td>
+            <td>User interacts with React frontend (click, form submit)</td>
+            <td>React Components</td>
+        </tr>
+        <tr>
+            <td>2. API Call</td>
+            <td>Frontend sends HTTP request via Axios to backend</td>
+            <td>Axios, HTTP/REST</td>
+        </tr>
+        <tr>
+            <td>3. Authentication</td>
+            <td>Backend middleware verifies JWT token</td>
+            <td>JWT, Express Middleware</td>
+        </tr>
+        <tr>
+            <td>4. Business Logic</td>
+            <td>Route handler processes request</td>
+            <td>Express Routes</td>
+        </tr>
+        <tr>
+            <td>5. Database Query</td>
+            <td>Mongoose queries MongoDB</td>
+            <td>Mongoose ODM</td>
+        </tr>
+        <tr>
+            <td>6. Response</td>
+            <td>Data returned to frontend via JSON</td>
+            <td>JSON, HTTP Response</td>
+        </tr>
+        <tr>
+            <td>7. UI Update</td>
+            <td>React updates UI with new data</td>
+            <td>React State</td>
+        </tr>
+    </table>
+
+    <h2>Security Architecture</h2>
+    <div class="two-column">
+        <div class="component-box">
+            <h3>Authentication Flow</h3>
+            <ol style="font-size: 12px;">
+                <li>User submits login credentials</li>
+                <li>Backend validates and hashes password</li>
+                <li>JWT token generated (7-day expiration)</li>
+                <li>Token stored in localStorage</li>
+                <li>Token sent in Authorization header</li>
+                <li>Middleware verifies token on each request</li>
+            </ol>
+        </div>
+        <div class="component-box">
+            <h3>Security Measures</h3>
+            <ul style="font-size: 12px;">
+                <li><strong>Password Hashing:</strong> bcryptjs (10 salt rounds)</li>
+                <li><strong>JWT Tokens:</strong> Secure token-based auth</li>
+                <li><strong>Rate Limiting:</strong> 100 requests/15min per IP</li>
+                <li><strong>CORS:</strong> Restricted origin access</li>
+                <li><strong>Helmet:</strong> Security HTTP headers</li>
+                <li><strong>Input Validation:</strong> All user inputs validated</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Deployment Architecture</h2>
+    <div class="component-box">
+        <h3>Containerization & Orchestration</h3>
+        <ul>
+            <li><strong>Docker:</strong> Multi-stage builds for optimized images</li>
+            <li><strong>Docker Compose:</strong> Local development with MongoDB</li>
+            <li><strong>Kubernetes:</strong> Production orchestration (DOKS)</li>
+            <li><strong>HPA:</strong> Auto-scaling (2-10 pods based on CPU)</li>
+            <li><strong>LoadBalancer:</strong> DigitalOcean Load Balancer</li>
+            <li><strong>Ingress:</strong> Nginx with SSL/TLS termination</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 30px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 12px;">
+        <p style="margin: 0;"><strong>Architecture Type:</strong> Full-Stack Web Application (MERN Stack)</p>
+        <p style="margin: 5px 0 0 0;"><strong>Deployment Model:</strong> Containerized microservices with Kubernetes orchestration</p>
+        <p style="margin: 5px 0 0 0;"><strong>Scalability:</strong> Horizontal scaling with HPA, supports 100+ concurrent users</p>
+    </div>
+</body>
+</html>
+
+

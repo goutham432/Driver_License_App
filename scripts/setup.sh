@@ -59,3 +59,4 @@ echo "4. Start backend: npm run dev"
 echo "5. Start frontend: cd client && npm run dev"
 echo ""
 
+

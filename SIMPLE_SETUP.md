@@ -112,3 +112,4 @@ The frontend will automatically connect to the backend at http://localhost:5000
 
 **Need help?** Check README.md or SETUP_INSTRUCTIONS.md for more details.
 
+

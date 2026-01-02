@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -50,24 +51,33 @@ if (process.env.NODE_ENV === 'production') {
 // MongoDB connection
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/driver-license-platform', {
+    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/driver-license-platform';
+    const conn = await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    return true;
   } catch (error) {
-    console.error('MongoDB connection error:', error.message);
-    process.exit(1);
+    console.error('⚠️  MongoDB connection error:', error.message);
+    console.error('⚠️  Server will continue without database. Some features may not work.');
+    console.error('💡 To fix: Set up MongoDB Atlas (cloud) or install local MongoDB');
+    console.error('💡 See MONGODB_SETUP.md for instructions');
+    return false;
   }
 };
 
 // Start server
 const PORT = process.env.PORT || 5000;
 
-connectDB().then(() => {
+// Connect to MongoDB, but don't exit if it fails (for development)
+connectDB().then((connected) => {
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`✅ Server running on port ${PORT}`);
+    console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+    if (!connected) {
+      console.log('⚠️  Running without database - UI will work but features requiring database won\'t function');
+    }
   });
 });
 

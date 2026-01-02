@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: your-registry/driver-license-platform:latest
+        image: registry.digitalocean.com/driver-license-registry/driver-license-app:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -57,4 +57,5 @@ spec:
             port: 5000
           initialDelaySeconds: 10
           periodSeconds: 5
+
 

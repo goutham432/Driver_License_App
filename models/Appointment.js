@@ -68,7 +68,7 @@ const appointmentSchema = new mongoose.Schema({
 
 // Generate confirmation number before saving
 appointmentSchema.pre('save', async function(next) {
-  if (!this.confirmationNumber) {
+  if (!this.confirmationNumber || this.confirmationNumber === 'TEMP') {
     const timestamp = Date.now().toString(36).toUpperCase();
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     this.confirmationNumber = `DL-${timestamp}-${random}`;

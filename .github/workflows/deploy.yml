@@ -1,0 +1,59 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to DigitalOcean Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: registry.digitalocean.com
+        username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: registry.digitalocean.com/driver-license-registry/driver-license-app:latest
+        cache-from: type=registry,ref=registry.digitalocean.com/driver-license-registry/driver-license-app:buildcache
+        cache-to: type=registry,ref=registry.digitalocean.com/driver-license-registry/driver-license-app:buildcache,mode=max
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save driver-license-cluster
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl set image deployment/driver-license-app \
+          app=registry.digitalocean.com/driver-license-registry/driver-license-app:latest \
+          -n driver-license-platform
+        
+        kubectl rollout status deployment/driver-license-app -n driver-license-platform
+
+    - name: Verify deployment
+      run: |
+        kubectl get pods -n driver-license-platform
+        kubectl get svc -n driver-license-platform
+
