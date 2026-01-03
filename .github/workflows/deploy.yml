@@ -123,14 +123,23 @@ jobs:
         kubectl get pods -n driver-license-platform
         echo ""
         echo "Checking for failed pods..."
-        # Get all pods that are not Running or Succeeded using a different method
-        ALL_PODS=$(kubectl get pods -n driver-license-platform -o json | jq -r '.items[] | select(.status.phase != "Running" and .status.phase != "Succeeded") | .metadata.name')
-        if [ -n "$ALL_PODS" ]; then
-          echo "⚠️ Found pods that are not running. Checking logs..."
-          for pod in $ALL_PODS; do
+        # Get all pods and filter for non-running/non-succeeded ones
+        kubectl get pods -n driver-license-platform -o json > /tmp/pods.json
+        # Extract pod names that are not Running or Succeeded
+        FAILED_PODS=$(python3 -c "
+        import json, sys
+        data = json.load(sys.stdin)
+        pods = [item['metadata']['name'] for item in data['items'] 
+                if item['status']['phase'] not in ['Running', 'Succeeded']]
+        print(' '.join(pods))
+        " < /tmp/pods.json)
+        
+        if [ -n "$FAILED_PODS" ]; then
+          echo "⚠️ Found pods that are not running: $FAILED_PODS"
+          for pod in $FAILED_PODS; do
             echo ""
             echo "=== Status for pod: $pod ==="
-            kubectl get pod $pod -n driver-license-platform -o wide
+            kubectl get pod $pod -n driver-license-platform -o wide || true
             echo ""
             echo "=== Logs for pod: $pod ==="
             kubectl logs $pod -n driver-license-platform --tail=50 || true
