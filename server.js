@@ -14,9 +14,11 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false, // Allow loading assets
+}));
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.CLIENT_URL || '*', // Allow all origins in production
   credentials: true
 }));
 app.use(express.json());
