@@ -105,6 +105,17 @@ jobs:
         kubectl apply -f k8s/app-service.yaml
         kubectl apply -f k8s/hpa.yaml
         echo "✅ Application manifests applied"
+        echo ""
+        echo "Waiting a moment for pods to start..."
+        sleep 10
+        echo "Current pod status:"
+        kubectl get pods -n driver-license-platform
+
+    - name: Delete old failed pods
+      run: |
+        echo "Deleting old failed pods to allow new deployment..."
+        kubectl delete pods -l app=driver-license-app -n driver-license-platform --field-selector=status.phase!=Running --ignore-not-found=true || true
+        echo "✅ Old pods cleaned up"
 
     - name: Check pod status and logs
       run: |
@@ -112,17 +123,23 @@ jobs:
         kubectl get pods -n driver-license-platform
         echo ""
         echo "Checking for failed pods..."
-        FAILED_PODS=$(kubectl get pods -n driver-license-platform -o jsonpath='{.items[?(@.status.phase!="Running" && @.status.phase!="Succeeded")].metadata.name}')
-        if [ -n "$FAILED_PODS" ]; then
+        # Get all pods that are not Running or Succeeded using a different method
+        ALL_PODS=$(kubectl get pods -n driver-license-platform -o json | jq -r '.items[] | select(.status.phase != "Running" and .status.phase != "Succeeded") | .metadata.name')
+        if [ -n "$ALL_PODS" ]; then
           echo "⚠️ Found pods that are not running. Checking logs..."
-          for pod in $FAILED_PODS; do
+          for pod in $ALL_PODS; do
+            echo ""
+            echo "=== Status for pod: $pod ==="
+            kubectl get pod $pod -n driver-license-platform -o wide
             echo ""
             echo "=== Logs for pod: $pod ==="
             kubectl logs $pod -n driver-license-platform --tail=50 || true
             echo ""
             echo "=== Events for pod: $pod ==="
-            kubectl describe pod $pod -n driver-license-platform | tail -20 || true
+            kubectl describe pod $pod -n driver-license-platform | tail -30 || true
           done
+        else
+          echo "✅ All pods are running or succeeded"
         fi
 
     - name: Wait for deployment
