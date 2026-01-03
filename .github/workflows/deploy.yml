@@ -58,6 +58,18 @@ jobs:
         kubectl create namespace driver-license-platform --dry-run=client -o yaml | kubectl apply -f -
         echo "✅ Namespace ready"
 
+    - name: Create registry credentials secret
+      run: |
+        echo "Creating registry credentials for image pull..."
+        # Create secret for DigitalOcean Container Registry
+        kubectl create secret docker-registry registry-credentials \
+          --docker-server=registry.digitalocean.com \
+          --docker-username=${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} \
+          --docker-password=${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} \
+          -n driver-license-platform \
+          --dry-run=client -o yaml | kubectl apply -f -
+        echo "✅ Registry credentials created"
+
     - name: Create Kubernetes secrets
       run: |
         echo "Creating Kubernetes secrets..."
