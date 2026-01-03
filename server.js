@@ -44,7 +44,9 @@ app.get('/health', (req, res) => {
 
 // Serve static files from React app in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+  // Serve static assets (JS, CSS, images, etc.)
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  // Serve index.html for all routes (SPA routing)
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
