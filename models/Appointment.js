@@ -60,7 +60,7 @@ const appointmentSchema = new mongoose.Schema({
   confirmationNumber: {
     type: String,
     unique: true,
-    required: true
+    required: false // Will be generated in pre-save hook
   }
 }, {
   timestamps: true
@@ -68,7 +68,8 @@ const appointmentSchema = new mongoose.Schema({
 
 // Generate confirmation number before saving
 appointmentSchema.pre('save', async function(next) {
-  if (!this.confirmationNumber || this.confirmationNumber === 'TEMP') {
+  // Always generate if not present (required field, but validation happens after pre-save)
+  if (!this.confirmationNumber) {
     const timestamp = Date.now().toString(36).toUpperCase();
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     this.confirmationNumber = `DL-${timestamp}-${random}`;
