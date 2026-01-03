@@ -26,14 +26,14 @@ Error: no cluster goes by the name "driver-license-cluster"
    - **Node pool:**
      - **Name:** `driver-license-pool`
      - **Node plan:** `s-1vcpu-2gb` ($12/month per node) ⚠️ **Cost-optimized for $25 credit**
-     - **Node count:** `1` ⚠️ **Single node** (for minimal cost)
+     - **Node count:** `2` ✅ **Two nodes for high availability**
    - **Add tags (optional):** `driver-license`, `production`
 4. **Click:** "Create Cluster"
 5. **Wait:** 5-10 minutes for cluster to be created
 
-**Cost:** $12/month (1 node × $12/month)
+**Cost:** $24/month (2 nodes × $12/month)
 
-**Note:** For cost optimization with $25 credit, we use 1 node. For production, use 2+ nodes for high availability.
+**Note:** Using 2 nodes provides high availability (production-ready) while staying within budget by using smaller node size.
 
 ### Option 2: Create via doctl (Command Line)
 
@@ -42,10 +42,10 @@ Error: no cluster goes by the name "driver-license-cluster"
 doctl auth init
 # Enter your token when prompted
 
-# Create cluster (cost-optimized: 1 node, smallest size)
+# Create cluster (cost-optimized: 2 nodes for HA, smallest size)
 doctl kubernetes cluster create driver-license-cluster `
   --region nyc1 `
-  --node-pool "name=driver-license-pool;size=s-1vcpu-2gb;count=1" `
+  --node-pool "name=driver-license-pool;size=s-1vcpu-2gb;count=2" `
   --version latest
 ```
 
@@ -94,12 +94,12 @@ Before running the workflow, ensure:
 | Resource | Cost/Month |
 |----------|------------|
 | Container Registry (Basic) | $5 |
-| Kubernetes Node (1x s-1vcpu-2gb) | $12 |
+| Kubernetes Nodes (2x s-1vcpu-2gb) | $24 |
 | Load Balancer | $12 |
 | MongoDB Storage (10GB) | $1.20 |
-| **Total** | **~$30.20** |
+| **Total** | **~$42.20** |
 
-**Note:** This is the cost-optimized configuration. For production, use 2+ nodes for high availability.
+**Note:** This is the cost-optimized configuration with high availability. Using smaller node size (s-1vcpu-2gb) saves $24/month vs s-2vcpu-4gb while maintaining 2 nodes for HA.
 
 ---
 
@@ -113,7 +113,7 @@ Before running the workflow, ensure:
 2. **Create Kubernetes Cluster:**
    - https://cloud.digitalocean.com/kubernetes/clusters
    - Name: `driver-license-cluster`
-   - Nodes: 1x s-1vcpu-2gb (cost-optimized for $25 credit)
+   - Nodes: 2x s-1vcpu-2gb (cost-optimized with high availability)
 
 3. **Set GitHub Secret:**
    - https://github.com/goutham432/Driver_License_App/settings/secrets/actions
