@@ -25,13 +25,15 @@ Error: no cluster goes by the name "driver-license-cluster"
    - **Kubernetes version:** Latest stable (default)
    - **Node pool:**
      - **Name:** `driver-license-pool`
-     - **Node plan:** `s-2vcpu-4gb` ($24/month per node)
-     - **Node count:** `2` (for high availability)
+     - **Node plan:** `s-1vcpu-2gb` ($12/month per node) ⚠️ **Cost-optimized for $25 credit**
+     - **Node count:** `1` ⚠️ **Single node** (for minimal cost)
    - **Add tags (optional):** `driver-license`, `production`
 4. **Click:** "Create Cluster"
 5. **Wait:** 5-10 minutes for cluster to be created
 
-**Cost:** ~$48/month (2 nodes × $24/month)
+**Cost:** $12/month (1 node × $12/month)
+
+**Note:** For cost optimization with $25 credit, we use 1 node. For production, use 2+ nodes for high availability.
 
 ### Option 2: Create via doctl (Command Line)
 
