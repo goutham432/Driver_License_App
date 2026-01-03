@@ -12,8 +12,40 @@ try {
     $kubectlVersion = kubectl version --client --short 2>&1
     Write-Host "✅ kubectl found" -ForegroundColor Green
 } catch {
-    Write-Host "❌ kubectl not found. Please install kubectl first." -ForegroundColor Red
-    exit 1
+    Write-Host "❌ kubectl not found." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Installing kubectl..." -ForegroundColor Yellow
+    
+    # Try to install kubectl
+    $installScript = Join-Path $PSScriptRoot "INSTALL_KUBECTL.ps1"
+    if (Test-Path $installScript) {
+        & $installScript
+        Start-Sleep -Seconds 3
+        
+        # Check again
+        try {
+            $kubectlVersion = kubectl version --client --short 2>&1
+            Write-Host "✅ kubectl installed successfully!" -ForegroundColor Green
+        } catch {
+            Write-Host ""
+            Write-Host "❌ kubectl installation failed or not in PATH yet." -ForegroundColor Red
+            Write-Host ""
+            Write-Host "Please install kubectl manually:" -ForegroundColor Yellow
+            Write-Host "  1. Run: .\INSTALL_KUBECTL.ps1" -ForegroundColor White
+            Write-Host "  2. OR install via winget: winget install Kubernetes.kubectl" -ForegroundColor White
+            Write-Host "  3. OR install via Chocolatey: choco install kubernetes-cli" -ForegroundColor White
+            Write-Host ""
+            Write-Host "After installation, restart your terminal and try again." -ForegroundColor Yellow
+            exit 1
+        }
+    } else {
+        Write-Host ""
+        Write-Host "Installation script not found. Please install kubectl manually:" -ForegroundColor Yellow
+        Write-Host "  1. Run: .\INSTALL_KUBECTL.ps1" -ForegroundColor White
+        Write-Host "  2. OR install via winget: winget install Kubernetes.kubectl" -ForegroundColor White
+        Write-Host "  3. OR install via Chocolatey: choco install kubernetes-cli" -ForegroundColor White
+        exit 1
+    }
 }
 
 # Check if Node.js is available

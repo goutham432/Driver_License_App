@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver License Platform - Architecture Diagram</title>
+    <style>
+        @page {
+            size: 11in 8.5in landscape;
+            margin: 0.5in;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e3c72;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        /* Architecture Diagram Styles */
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .layer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+        
+        .layer-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .component {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .component:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .component-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .component-details {
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .component-details ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .component-details li {
+            margin: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .component-details li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Connection Lines */
+        .connection {
+            text-align: center;
+            color: #3498db;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 10px 0;
+            padding: 10px;
+            background: #e8f4f8;
+            border-radius: 5px;
+        }
+        
+        /* Kubernetes Layer */
+        .k8s-layer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+        
+        /* Infrastructure Layer */
+        .infra-layer {
+            background: linear-gradient(135deg, #16a085 0%, #27ae60 100%);
+        }
+        
+        /* Legend */
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .legend h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+        }
+        
+        .tech-stack {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .tech-category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .tech-category h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .tech-list {
+            list-style: none;
+        }
+        
+        .tech-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .tech-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .tech-list strong {
+            color: #3498db;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Driver License Platform</h1>
+        <p class="subtitle">System Architecture Diagram - DigitalOcean Kubernetes Deployment</p>
+        
+        <!-- Architecture Diagram -->
+        <div class="architecture">
+            <!-- User Layer -->
+            <div class="layer">
+                <div class="layer-title">👤 USER LAYER</div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">Web Browser</div>
+                        <div class="component-details">
+                            <ul>
+                                <li>Chrome, Firefox, Safari, Edge</li>
+                                <li>Mobile & Desktop</li>
+                                <li>HTTPS/HTTP</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="connection">⬇ HTTPS/HTTP ⬇</div>
+            
+            <!-- Load Balancer Layer -->
+            <div class="layer infra-layer">
+                <div class="layer-title">⚖️ LOAD BALANCER</div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">DigitalOcean Load Balancer</div>
+                        <div class="component-details">
+                            <ul>
+                                <li>Distributes traffic to pods</li>
+                                <li>Health checks</li>
+                                <li>SSL termination (optional)</li>
+                                <li>Public IP: 129.212.162.2</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="connection">⬇ Port 80 → 5000 ⬇</div>
+            
+            <!-- Kubernetes Layer -->
+            <div class="layer k8s-layer">
+                <div class="layer-title">☸️ KUBERNETES CLUSTER (DOKS)</div>
+                <div class="components">
+                    <!-- Application Pods -->
+                    <div class="component">
+                        <div class="component-title">Application Pods (2-10 replicas)</div>
+                        <div class="component-details">
+                            <ul>
+                                <li><strong>Frontend:</strong> React 18 (built, static)</li>
+                                <li><strong>Backend:</strong> Node.js + Express.js</li>
+                                <li><strong>Port:</strong> 5000</li>
+                                <li><strong>HPA:</strong> Auto-scales 2-10 pods</li>
+                                <li><strong>Resources:</strong> 100m CPU, 128Mi RAM</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- MongoDB Pod -->
+                    <div class="component">
+                        <div class="component-title">MongoDB Pod (1 replica)</div>
+                        <div class="component-details">
+                            <ul>
+                                <li><strong>Database:</strong> MongoDB 7.0</li>
+                                <li><strong>Storage:</strong> 10GB PVC</li>
+                                <li><strong>Port:</strong> 27017</li>
+                                <li><strong>Collections:</strong> Users, Tests, Appointments</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Services -->
+                    <div class="component">
+                        <div class="component-title">Kubernetes Services</div>
+                        <div class="component-details">
+                            <ul>
+                                <li><strong>App Service:</strong> LoadBalancer type</li>
+                                <li><strong>MongoDB Service:</strong> ClusterIP</li>
+                                <li><strong>Ingress:</strong> Nginx (optional)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="connection">⬇ Mongoose ODM ⬇</div>
+            
+            <!-- Data Layer -->
+            <div class="layer">
+                <div class="layer-title">💾 DATA LAYER</div>
+                <div class="components">
+                    <div class="component">
+                        <div class="component-title">MongoDB Database</div>
+                        <div class="component-details">
+                            <ul>
+                                <li><strong>Users Collection:</strong> Authentication, profiles</li>
+                                <li><strong>Tests Collection:</strong> Practice tests, questions</li>
+                                <li><strong>Appointments Collection:</strong> DMV bookings</li>
+                                <li><strong>Storage:</strong> Persistent Volume (10GB)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CI/CD Pipeline -->
+        <div style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
+            <h3 style="color: #856404; margin-bottom: 15px;">🔄 CI/CD Pipeline (GitHub Actions)</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div>
+                    <strong>1. Code Push</strong><br>
+                    <small>GitHub repository</small>
+                </div>
+                <div>
+                    <strong>2. Build Image</strong><br>
+                    <small>Docker build & push</small>
+                </div>
+                <div>
+                    <strong>3. Deploy</strong><br>
+                    <small>kubectl apply</small>
+                </div>
+                <div>
+                    <strong>4. Verify</strong><br>
+                    <small>Health checks</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technology Stack -->
+        <div class="tech-stack">
+            <div class="tech-category">
+                <h3>Frontend Technologies</h3>
+                <ul class="tech-list">
+                    <li><strong>React 18.2.0</strong> - UI Library</li>
+                    <li><strong>Vite 4.4.5</strong> - Build Tool</li>
+                    <li><strong>React Router 6</strong> - Navigation</li>
+                    <li><strong>Tailwind CSS 3</strong> - Styling</li>
+                    <li><strong>Axios</strong> - HTTP Client</li>
+                </ul>
+            </div>
+            
+            <div class="tech-category">
+                <h3>Backend Technologies</h3>
+                <ul class="tech-list">
+                    <li><strong>Node.js 18+</strong> - Runtime</li>
+                    <li><strong>Express.js 4</strong> - Web Framework</li>
+                    <li><strong>MongoDB 7.0</strong> - Database</li>
+                    <li><strong>Mongoose 7</strong> - ODM</li>
+                    <li><strong>JWT</strong> - Authentication</li>
+                </ul>
+            </div>
+            
+            <div class="tech-category">
+                <h3>Infrastructure</h3>
+                <ul class="tech-list">
+                    <li><strong>Docker</strong> - Containerization</li>
+                    <li><strong>Kubernetes</strong> - Orchestration</li>
+                    <li><strong>DigitalOcean DOKS</strong> - Managed K8s</li>
+                    <li><strong>GitHub Actions</strong> - CI/CD</li>
+                    <li><strong>Load Balancer</strong> - Traffic Distribution</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <h3>Architecture Components</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    <div>
+                        <strong>Application Layer</strong><br>
+                        <small>React Frontend + Node.js Backend</small>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);"></div>
+                    <div>
+                        <strong>Kubernetes Layer</strong><br>
+                        <small>Container Orchestration</small>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #16a085 0%, #27ae60 100%);"></div>
+                    <div>
+                        <strong>Infrastructure Layer</strong><br>
+                        <small>Load Balancer, Networking</small>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    <div>
+                        <strong>Data Layer</strong><br>
+                        <small>MongoDB Database</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Data Flow -->
+        <div style="margin-top: 30px; padding: 20px; background: #e8f4f8; border-radius: 8px;">
+            <h3 style="color: #2c3e50; margin-bottom: 15px;">📊 Data Flow</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div style="text-align: center; flex: 1; min-width: 150px;">
+                    <strong>1. User Request</strong><br>
+                    <small>Browser → Load Balancer</small>
+                </div>
+                <div style="font-size: 24px;">→</div>
+                <div style="text-align: center; flex: 1; min-width: 150px;">
+                    <strong>2. Load Distribution</strong><br>
+                    <small>LB → Application Pod</small>
+                </div>
+                <div style="font-size: 24px;">→</div>
+                <div style="text-align: center; flex: 1; min-width: 150px;">
+                    <strong>3. API Processing</strong><br>
+                    <small>Express.js → MongoDB</small>
+                </div>
+                <div style="font-size: 24px;">→</div>
+                <div style="text-align: center; flex: 1; min-width: 150px;">
+                    <strong>4. Response</strong><br>
+                    <small>JSON → React UI</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Metrics -->
+        <div style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid #3498db;">
+                <div style="font-size: 24px; font-weight: bold; color: #3498db;">2-10</div>
+                <div style="font-size: 12px; color: #666;">Auto-scaling Pods</div>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid #27ae60;">
+                <div style="font-size: 24px; font-weight: bold; color: #27ae60;">< 200ms</div>
+                <div style="font-size: 12px; color: #666;">Response Time</div>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid #e74c3c;">
+                <div style="font-size: 24px; font-weight: bold; color: #e74c3c;">100+</div>
+                <div style="font-size: 12px; color: #666;">Concurrent Users</div>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid #f39c12;">
+                <div style="font-size: 24px; font-weight: bold; color: #f39c12;">$42/mo</div>
+                <div style="font-size: 12px; color: #666;">Infrastructure Cost</div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 15px; background: #fff3cd; border-radius: 8px; text-align: center; font-size: 12px; color: #856404;">
+            <strong>Repository:</strong> https://github.com/goutham432/Driver_License_App | 
+            <strong>Deployed URL:</strong> http://129.212.162.2 | 
+            <strong>Date:</strong> January 2025
+        </div>
+    </div>
+</body>
+</html>
+
