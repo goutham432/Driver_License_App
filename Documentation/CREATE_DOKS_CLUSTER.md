@@ -40,10 +40,10 @@ Error: no cluster goes by the name "driver-license-cluster"
 doctl auth init
 # Enter your token when prompted
 
-# Create cluster
+# Create cluster (cost-optimized: 1 node, smallest size)
 doctl kubernetes cluster create driver-license-cluster `
   --region nyc1 `
-  --node-pool "name=driver-license-pool;size=s-2vcpu-4gb;count=2" `
+  --node-pool "name=driver-license-pool;size=s-1vcpu-2gb;count=1" `
   --version latest
 ```
 
@@ -92,10 +92,12 @@ Before running the workflow, ensure:
 | Resource | Cost/Month |
 |----------|------------|
 | Container Registry (Basic) | $5 |
-| Kubernetes Nodes (2x s-2vcpu-4gb) | $48 |
+| Kubernetes Node (1x s-1vcpu-2gb) | $12 |
 | Load Balancer | $12 |
 | MongoDB Storage (10GB) | $1.20 |
-| **Total** | **~$66.20** |
+| **Total** | **~$30.20** |
+
+**Note:** This is the cost-optimized configuration. For production, use 2+ nodes for high availability.
 
 ---
 
@@ -109,7 +111,7 @@ Before running the workflow, ensure:
 2. **Create Kubernetes Cluster:**
    - https://cloud.digitalocean.com/kubernetes/clusters
    - Name: `driver-license-cluster`
-   - Nodes: 2x s-2vcpu-4gb
+   - Nodes: 1x s-1vcpu-2gb (cost-optimized for $25 credit)
 
 3. **Set GitHub Secret:**
    - https://github.com/goutham432/Driver_License_App/settings/secrets/actions

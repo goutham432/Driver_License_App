@@ -62,16 +62,16 @@ try {
         Write-Host "Creating cluster with:" -ForegroundColor Cyan
         Write-Host "  Name: driver-license-cluster" -ForegroundColor White
         Write-Host "  Region: $region" -ForegroundColor White
-        Write-Host "  Node Plan: s-2vcpu-4gb" -ForegroundColor White
-        Write-Host "  Node Count: 2" -ForegroundColor White
-        Write-Host "  Cost: ~$48/month" -ForegroundColor Yellow
+        Write-Host "  Node Plan: s-1vcpu-2gb (cost-optimized)" -ForegroundColor White
+        Write-Host "  Node Count: 1 (cost-optimized)" -ForegroundColor White
+        Write-Host "  Cost: ~$12/month" -ForegroundColor Yellow
         Write-Host ""
         
         $confirm = Read-Host "Continue? (y/n)"
         if ($confirm -eq "y" -or $confirm -eq "Y") {
             doctl kubernetes cluster create driver-license-cluster `
                 --region $region `
-                --node-pool "name=driver-license-pool;size=s-2vcpu-4gb;count=2" `
+                --node-pool "name=driver-license-pool;size=s-1vcpu-2gb;count=1" `
                 --version latest
             
             Write-Host ""
