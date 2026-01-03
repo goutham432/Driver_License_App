@@ -38,7 +38,19 @@ jobs:
       uses: azure/setup-kubectl@v3
 
     - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save driver-license-cluster
+      run: |
+        echo "Checking if cluster exists..."
+        if doctl kubernetes cluster list | grep -q "driver-license-cluster"; then
+          echo "✅ Cluster found, saving kubeconfig..."
+          doctl kubernetes cluster kubeconfig save driver-license-cluster
+        else
+          echo "❌ Error: Cluster 'driver-license-cluster' not found!"
+          echo "Please create the cluster first:"
+          echo "  1. Go to: https://cloud.digitalocean.com/kubernetes/clusters"
+          echo "  2. Create cluster named: driver-license-cluster"
+          echo "  3. Wait for cluster to be running (5-10 minutes)"
+          exit 1
+        fi
 
     - name: Deploy to Kubernetes
       run: |
