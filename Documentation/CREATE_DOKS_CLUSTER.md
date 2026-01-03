@@ -19,17 +19,23 @@ Error: no cluster goes by the name "driver-license-cluster"
 
 1. **Go to:** https://cloud.digitalocean.com/kubernetes/clusters
 2. **Click:** "Create Kubernetes Cluster"
-3. **Settings:**
-   - **Cluster name:** `driver-license-cluster`
+3. **Top Section - Cluster Settings:**
+   - **Cluster name:** `driver-license-cluster` ⚠️ **IMPORTANT: This is what the workflow uses!**
    - **Region:** Choose closest to you (e.g., NYC1, SFO3, AMS3)
    - **Kubernetes version:** Latest stable (default)
-   - **Node pool:**
-     - **Name:** `driver-license-pool`
-     - **Node plan:** `s-1vcpu-2gb` ($12/month per node) ⚠️ **Cost-optimized for $25 credit**
-     - **Node count:** `2` ✅ **Two nodes for high availability**
-   - **Add tags (optional):** `driver-license`, `production`
-4. **Click:** "Create Cluster"
-5. **Wait:** 5-10 minutes for cluster to be created
+4. **Scroll Down - Node Pool Section:**
+   - **Node pool name:** `driver-license-pool` (or leave default - doesn't matter)
+   - **Node plan:** `s-1vcpu-2gb` ($12/month per node) ⚠️ **Cost-optimized for $25 credit**
+   - **Node count:** `2` ✅ **Two nodes for high availability**
+   - **Autoscaling:** ❌ **Leave DISABLED** (for budget control)
+5. **Add tags (optional):** `driver-license`, `production`
+6. **Click:** "Create Cluster"
+7. **Wait:** 5-10 minutes for cluster to be created
+
+**Note:** 
+- **Cluster name** is at the top (required for workflow)
+- **Node pool name** is in the node pool section (can be default)
+- **Autoscaling:** Disable it to keep costs predictable
 
 **Cost:** $24/month (2 nodes × $12/month)
 

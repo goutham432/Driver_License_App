@@ -63,16 +63,22 @@
 
 1. **Go to:** https://cloud.digitalocean.com/kubernetes/clusters
 2. **Click:** "Create Kubernetes Cluster"
-3. **Settings:**
-   - **Cluster name:** `driver-license-cluster`
+3. **Top Section - Cluster Settings:**
+   - **Cluster name:** `driver-license-cluster` ⚠️ **IMPORTANT: Must match exactly!**
    - **Region:** Choose closest to you
    - **Kubernetes version:** Latest stable (default)
-   - **Node pool:**
-     - **Name:** `driver-license-pool` (or leave default)
-     - **Node plan:** `s-1vcpu-2gb` ⚠️ **Smallest option** ($12/month per node)
-     - **Node count:** `2` ✅ **Two nodes for high availability**
-4. **Click:** "Create Cluster"
-5. **Wait:** 5-10 minutes for cluster to be created
+4. **Scroll Down - Node Pool Section:**
+   - **Node pool name:** `driver-license-pool` (or leave default - doesn't matter)
+   - **Node plan:** `s-1vcpu-2gb` ⚠️ **Smallest option** ($12/month per node)
+   - **Node count:** `2` ✅ **Two nodes for high availability**
+   - **Autoscaling:** ❌ **Leave DISABLED** (for budget control)
+5. **Click:** "Create Cluster"
+6. **Wait:** 5-10 minutes for cluster to be created
+
+**Important Notes:**
+- **Cluster name** is at the TOP of the form (this is what the workflow uses)
+- **Node pool name** is in the node pool section (can be anything or default)
+- **Autoscaling:** Keep it disabled to avoid unexpected costs
 
 **Cost:** $24/month (2 nodes × $12/month)
 
