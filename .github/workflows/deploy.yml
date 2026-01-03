@@ -52,13 +52,53 @@ jobs:
           exit 1
         fi
 
-    - name: Deploy to Kubernetes
+    - name: Create namespace if not exists
       run: |
-        kubectl set image deployment/driver-license-app \
-          app=registry.digitalocean.com/driver-license-registry/driver-license-app:latest \
-          -n driver-license-platform
-        
-        kubectl rollout status deployment/driver-license-app -n driver-license-platform
+        echo "Creating namespace if it doesn't exist..."
+        kubectl create namespace driver-license-platform --dry-run=client -o yaml | kubectl apply -f -
+        echo "✅ Namespace ready"
+
+    - name: Create Kubernetes secrets
+      run: |
+        echo "Creating Kubernetes secrets..."
+        # Check if secret already exists
+        if kubectl get secret app-secrets -n driver-license-platform >/dev/null 2>&1; then
+          echo "Secret already exists, skipping..."
+        else
+          # Generate a random JWT secret
+          JWT_SECRET=$(openssl rand -base64 32)
+          # MongoDB connection string (using service name)
+          MONGODB_URI="mongodb://mongodb-service:27017/driver-license-platform"
+          
+          kubectl create secret generic app-secrets \
+            --from-literal=mongodb-uri="$MONGODB_URI" \
+            --from-literal=jwt-secret="$JWT_SECRET" \
+            -n driver-license-platform
+          echo "✅ Secrets created"
+        fi
+
+    - name: Deploy MongoDB
+      run: |
+        echo "Deploying MongoDB..."
+        kubectl apply -f k8s/mongodb-deployment.yaml
+        echo "Waiting for MongoDB to be ready..."
+        kubectl wait --for=condition=ready pod -l app=mongodb -n driver-license-platform --timeout=300s || true
+        echo "✅ MongoDB deployed"
+
+    - name: Deploy application
+      run: |
+        echo "Deploying application..."
+        kubectl apply -f k8s/namespace.yaml
+        kubectl apply -f k8s/app-deployment.yaml
+        kubectl apply -f k8s/app-service.yaml
+        kubectl apply -f k8s/hpa.yaml
+        echo "✅ Application manifests applied"
+
+    - name: Wait for deployment
+      run: |
+        echo "Waiting for deployment to be ready..."
+        kubectl rollout status deployment/driver-license-app -n driver-license-platform --timeout=300s
+        echo "✅ Deployment ready"
 
     - name: Verify deployment
       run: |
