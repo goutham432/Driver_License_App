@@ -97,6 +97,15 @@ jobs:
         kubectl wait --for=condition=ready pod -l app=mongodb -n driver-license-platform --timeout=300s || true
         echo "✅ MongoDB deployed"
 
+    - name: Delete old deployment if exists
+      run: |
+        echo "Deleting old deployment to ensure clean state..."
+        kubectl delete deployment driver-license-app -n driver-license-platform --ignore-not-found=true || true
+        kubectl delete hpa driver-license-app-hpa -n driver-license-platform --ignore-not-found=true || true
+        echo "Waiting for old pods to be deleted..."
+        sleep 15
+        echo "✅ Old deployment cleaned up"
+
     - name: Deploy application
       run: |
         echo "Deploying application..."
@@ -105,6 +114,9 @@ jobs:
         kubectl apply -f k8s/app-service.yaml
         kubectl apply -f k8s/hpa.yaml
         echo "✅ Application manifests applied"
+        echo ""
+        echo "Verifying imagePullSecrets are set..."
+        kubectl get deployment driver-license-app -n driver-license-platform -o jsonpath='{.spec.template.spec.imagePullSecrets[*].name}' && echo "" || echo "⚠️ No imagePullSecrets found"
         echo ""
         echo "Waiting a moment for pods to start..."
         sleep 10
