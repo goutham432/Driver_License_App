@@ -61,14 +61,17 @@ jobs:
     - name: Create registry credentials secret
       run: |
         echo "Creating registry credentials for image pull..."
+        # Delete old secret if exists
+        kubectl delete secret registry-credentials -n driver-license-platform --ignore-not-found=true || true
         # Create secret for DigitalOcean Container Registry
         kubectl create secret docker-registry registry-credentials \
           --docker-server=registry.digitalocean.com \
           --docker-username=${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} \
           --docker-password=${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} \
-          -n driver-license-platform \
-          --dry-run=client -o yaml | kubectl apply -f -
+          -n driver-license-platform
         echo "✅ Registry credentials created"
+        echo "Verifying secret..."
+        kubectl get secret registry-credentials -n driver-license-platform
 
     - name: Create Kubernetes secrets
       run: |
