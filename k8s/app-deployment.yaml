@@ -6,7 +6,7 @@ metadata:
   labels:
     app: driver-license-app
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       app: driver-license-app
